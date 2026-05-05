@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcp-cicd-portfolio-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gcp-cicd-portfolio-app
+  template:
+    metadata:
+      labels:
+        app: gcp-cicd-portfolio-app
+    spec:
+      containers:
+      - name: gcp-cicd-portfolio-app
+        image: gcp-cicd-portfolio-app
+        ports:
+        - containerPort: 80

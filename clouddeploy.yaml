@@ -1,0 +1,17 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: gcp-cicd-portfolio-pipeline
+description: Cloud Deploy pipeline for GCP CICD portfolio project
+serialPipeline:
+  stages:
+  - targetId: gke-target
+
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: gke-target
+description: GKE deployment target for portfolio app
+gke:
+  cluster: projects/testing-bharani/locations/asia-south1-a/clusters/gke-dev-cluster

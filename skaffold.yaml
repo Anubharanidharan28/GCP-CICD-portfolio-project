@@ -1,0 +1,12 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: gcp-cicd-portfolio-app
+
+manifests:
+  rawYaml:
+    - k8s-manifest-folder/deployment.yaml
+    - k8s-manifest-folder/service.yaml
+
+deploy:
+  kubectl: {}

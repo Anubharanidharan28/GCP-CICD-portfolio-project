@@ -1,0 +1,29 @@
+steps:
+  # Step 1: Build Docker image from root Dockerfile
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -t
+      - asia-south1-docker.pkg.dev/$PROJECT_ID/gcp-app-repo/gcp-cicd-portfolio-app:$SHORT_SHA
+      - .
+
+  # Step 2: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - asia-south1-docker.pkg.dev/$PROJECT_ID/gcp-app-repo/gcp-cicd-portfolio-app:$SHORT_SHA
+
+  # Step 3: Create Cloud Deploy release to GKE
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - deploy
+      - releases
+      - create
+      - release-$SHORT_SHA
+      - --delivery-pipeline=gcp-cicd-portfolio-pipeline
+      - --region=asia-south1
+      - --images=gcp-cicd-portfolio-app=asia-south1-docker.pkg.dev/$PROJECT_ID/gcp-app-repo/gcp-cicd-portfolio-app:$SHORT_SHA
+
+images:
+  - asia-south1-docker.pkg.dev/$PROJECT_ID/gcp-app-repo/gcp-cicd-portfolio-app:$SHORT_SHA
